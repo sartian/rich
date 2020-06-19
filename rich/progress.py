@@ -41,6 +41,7 @@ from .control import Control
 from .highlighter import Highlighter
 from . import filesize
 from .live_render import LiveRender
+from .pad import Pad
 from .style import Style, StyleType
 from .table import Table
 from .text import Text
@@ -677,7 +678,7 @@ class Progress(RenderHook):
             self._live_render.set_renderable(self.get_renderable())
             if self.console.is_terminal:
                 with self.console:
-                    self.console.print(Control(""))
+                    self.console.null_print()
             self._refresh_count += 1
 
     def get_renderable(self) -> RenderableType:
@@ -778,7 +779,7 @@ class Progress(RenderHook):
         if self.console.is_terminal:
             renderables = [
                 self._live_render.position_cursor(),
-                *renderables,
+                Pad(*renderables),
                 self._live_render,
             ]
         return renderables
@@ -842,3 +843,4 @@ yield True, previous_value''',
             time.sleep(0.01)
             if random.randint(0, 100) < 1:
                 progress.log(next(examples))
+

@@ -826,6 +826,22 @@ class Console:
                         )
                     )
 
+    def null_print(self) -> None:
+        """A version of print that doesn't take arguments but will still call render hooks
+        
+        Used by Progress to position cursor and render a table.
+        
+        """
+        with self:
+            renderables: List[ConsoleRenderable] = []
+            for hook in self._render_hooks:
+                renderables = hook.process_renderables(renderables)
+            render_options = self.options
+            extend = self._buffer.extend
+            render = self.render
+            for renderable in renderables:
+                extend(render(renderable, render_options))
+
     def print_exception(
         self,
         *,
