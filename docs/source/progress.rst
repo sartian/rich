@@ -31,6 +31,7 @@ The Progress class is designed to be used as a *context manager* which will star
 Here's a simple example::
 
     from rich.progress import Progress
+    import time
 
     with Progress() as progress:
 
